@@ -1,0 +1,156 @@
+export type AttendanceStatus = "attending" | "not_attending";
+
+export type EditableMedia = {
+  src?: string;
+  alt: string;
+  label: string;
+  hint?: string;
+};
+
+export type EditableAudio = {
+  src?: string;
+  label: string;
+  hint?: string;
+  playIconSrc?: string;
+  pauseIconSrc?: string;
+};
+
+export type OrnamentConfig = {
+  src?: string;
+  size: number;
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  delay?: string;
+  duration?: string;
+  opacity?: number;
+};
+
+export const weddingContent = {
+  metadata: {
+    title: "Бексұлтан мен Бұлбұл | Үйлену тойына шақыру",
+    description:
+      "Бексұлтан мен Бұлбұлдың үйлену тойына арналған ресми шақыру сайты.",
+  },
+  background: {
+    backgroundImage: {
+      src: "/assets/background.png",
+      alt: "Той атмосферасына арналған фондық сурет",
+      label: "Background",
+    },
+    backgroundOverlayOpacity: 0.82,
+  },
+  audioTrack: {
+    src: "/assets/audio.mp3",
+    label: "Әуен",
+    hint: "Әуен файлы қолмен қосылады.",
+    playIconSrc: "/assets/music_play.png",
+    pauseIconSrc: "/assets/music_pause.png",
+  },
+  hero: {
+    names: "Бексұлтан & Бұлбұл",
+    subtitle: "Үйлену тойы",
+    dateLabel: "23 тамыз 2026",
+    invitationLine: "Сіздерді қуанышымызға ортақ болуға шақырамыз.",
+    detailCtaLabel: "Мәліметтер",
+    rsvpCtaLabel: "Жауап қалдыру",
+  },
+  invitation: {
+    message:
+      "Құрметті ағайын-туыс, құда-жекжат, нағашы-жиен, дос-жаран! Сіздерді ұлымыз Бексұлтан мен аяулы келініміз Бұлбұлдың үйлену тойына арналған салтанатты кешіміздің қадірлі қонағы болуға шын жүректен шақырамыз.",
+    hosts: "Әліби мен Салтанат",
+    note: "Ақ тілектеріңіз бен жылы көңілдеріңіз біз үшін ең қымбат сый.",
+  },
+  event: {
+    isoDate: "2026-08-23T18:00:00+05:00",
+    dateLabel: "Жексенбі, 23 тамыз 2026",
+    timeLabel: "18:00",
+    venue: "«Khama Park» салтанат сарайы",
+    address: "Жоғарғы Қаскелең тас жолы 25, Алматы",
+    mapUrl: "https://go.2gis.com/sRyu2",
+    mapLabel: "2GIS",
+    mapIconSrc: "/assets/2gis.png",
+    copyLabel: "Мекенжайды көшіру",
+    addToCalendarLabel: "Күнтізбеге қосу",
+  },
+  calendar: {
+    caption: "23 тамыз 2026",
+  },
+  countdown: {
+    note: "Тойға дейін",
+    completeLabel: "Қуанышты күн келіп жетті.",
+  },
+  timeline: [
+    {
+      time: "17:30",
+      title: "Қонақтарды қарсы алу",
+      description: "Қонақтарды күтіп алу, амандасу және жайғастыру.",
+    },
+    {
+      time: "18:00",
+      title: "Фуршет және фотосурет",
+      description: "Жылы жүздесу, естелік кадрлар және алғашқы тілектер.",
+    },
+    {
+      time: "19:00",
+      title: "Негізгі салтанаттың басталуы",
+      description: "Жүргізуші сөзі, құттықтаулар және салтанатты ашылу.",
+    },
+    {
+      time: "20:30",
+      title: "Беташар және ерекше сәттер",
+      description: "Дәстүрлі бөлім мен отбасыға арналған жүрекке жақын сәттер.",
+    },
+    {
+      time: "21:00",
+      title: "Алғашқы би",
+      description: "Музыка, би және мерекелік кештің жалғасы.",
+    },
+  ],
+  rsvp: {
+    intro: "Қатыса алсаңыз, қысқа жауап қалдырыңыз.",
+    formDuration: "1 минуттан аз",
+    fullNameLabel: "Толық аты-жөні",
+    fullNamePlaceholder: "Атыңызды жазыңыз",
+    attendanceLegend: "Қатысу жауабы",
+    attendingLabel: "Иә / Да",
+    attendingTitle: "Келемін",
+    attendingDescription: "Қуаныштарыңызға бірге ортақ боламын.",
+    notAttendingLabel: "Жоқ / Нет",
+    notAttendingTitle: "Келе алмаймын",
+    notAttendingDescription: "Ізгі тілегімді жолдаймын.",
+    plusOneLabel: "Жұбайыңыздың немесе серігіңіздің аты",
+    plusOnePlaceholder: "Жұбайыңызбен келсеңіз, есімін жазыңыз",
+    commentLabel: "Тілек немесе ескерту",
+    commentPlaceholder: "Қосымша ескерту немесе жылы тілек",
+    privacyNote:
+      "Жауап бірден сақталады. Қажет болса, жаңартылған нұсқаны қайта жібере аласыз.",
+    submitLabel: "Жауап жіберу",
+    pendingLabel: "Жіберілуде...",
+    success: "Рақмет. Жауабыңыз қабылданды, қуанышта жүздескенше.",
+    failure:
+      "Жауап жіберілмеді. Байланыс немесе Supabase баптауларын тексеріп, қайта көріңіз.",
+  },
+  footer: {
+    contactName: "Саид",
+    contactPhone: "+7 707 521 49 11",
+    whatsappUrl:
+      "https://wa.me/77075214911?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7!%20%D0%A2%D0%BE%D0%B9%20%D1%88%D0%B0%D2%9B%D1%8B%D1%80%D1%83%D1%8B%20%D0%B1%D0%BE%D0%B9%D1%8B%D0%BD%D1%88%D0%B0%20%D1%81%D2%B1%D1%80%D0%B0%D2%93%D1%8B%D0%BC%20%D0%B1%D0%B0%D1%80.",
+    whatsappLabel: "WhatsApp",
+    thanks: "Ізгі көңілмен келіп, қуанышымызды бірге бөлісетіндеріңіз үшін алғыс айтамыз.",
+    mapLabel: "2GIS",
+  },
+  media: {
+    heroArtwork: {
+      src: "/assets/main.png",
+      alt: "Тойға арналған негізгі шақыру суреті",
+      label: "Main invitation",
+    },
+    calendarImage: {
+      src: "/assets/calendar.png",
+      alt: "Той күні белгіленген күнтізбе суреті",
+      label: "Calendar",
+    },
+  },
+} as const;

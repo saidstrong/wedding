@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-charcoal antialiased;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.96), transparent 30%),
+      linear-gradient(180deg, #fdf9f4 0%, #f8f3ec 48%, #f5eee3 100%);
+    min-height: 100vh;
+    overflow-x: clip;
+  }
+
+  * {
+    @apply border-sand/30;
+  }
+
+  ::selection {
+    @apply bg-gold/25 text-charcoal;
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .panel-frame {
+    @apply rounded-[2.1rem] border border-white/65 bg-white/55 shadow-invitation backdrop-blur;
+  }
+
+  .ghost-button {
+    @apply inline-flex min-h-11 items-center justify-center rounded-full border border-gold/20 bg-white/80 px-4 text-sm font-semibold text-charcoal transition duration-300 hover:-translate-y-0.5 hover:border-gold/35 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/35;
+  }
+
+  .primary-button {
+    @apply inline-flex min-h-11 items-center justify-center rounded-full bg-gold px-5 text-sm font-semibold text-charcoal transition duration-300 hover:-translate-y-0.5 hover:bg-[#c7a76f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/35;
+  }
+
+  .section-transition {
+    @apply relative;
+  }
+
+  .section-transition::before {
+    content: "";
+    position: absolute;
+    inset-inline: 18%;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(184, 154, 94, 0),
+      rgba(184, 154, 94, 0.28),
+      rgba(184, 154, 94, 0)
+    );
+  }
+}
