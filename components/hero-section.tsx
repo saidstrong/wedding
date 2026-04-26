@@ -12,34 +12,36 @@ export function HeroSection() {
     <section className="relative pb-10 pt-5 sm:pb-14 sm:pt-8">
       <div className="section-shell">
         <div className="mx-auto max-w-[29rem]">
-          {heroArtwork ? (
-            <img
-              src={heroArtwork}
-              alt={weddingContent.media.heroArtwork.alt}
-              className="w-full rounded-[2.2rem] shadow-[0_28px_70px_rgba(61,47,26,0.14)]"
-            />
-          ) : (
-            <div className="rounded-[2.2rem] border border-gold/15 bg-white/70 px-8 py-16 text-center shadow-invitation backdrop-blur">
-              <p className="text-sm uppercase tracking-[0.36em] text-gold">
-                {weddingContent.hero.dateLabel}
-              </p>
-              <h1 className="mt-6 font-display text-5xl leading-[0.9] text-charcoal sm:text-6xl">
-                {weddingContent.hero.names}
-              </h1>
-              <p className="mt-6 text-base leading-8 text-taupe">
-                {weddingContent.hero.subtitle}
-              </p>
-            </div>
-          )}
+          <div className="relative">
+            {heroArtwork ? (
+              <img
+                src={heroArtwork}
+                alt={weddingContent.media.heroArtwork.alt}
+                className="w-full rounded-[2.2rem] shadow-[0_28px_70px_rgba(61,47,26,0.14)]"
+              />
+            ) : (
+              <div className="rounded-[2.2rem] border border-gold/15 bg-white/70 px-8 py-16 text-center shadow-invitation backdrop-blur">
+                <p className="text-sm uppercase tracking-[0.36em] text-gold">
+                  {weddingContent.hero.dateLabel}
+                </p>
+                <h1 className="mt-6 font-display text-5xl leading-[0.9] text-charcoal sm:text-6xl">
+                  {weddingContent.hero.names}
+                </h1>
+                <p className="mt-6 text-base leading-8 text-taupe">
+                  {weddingContent.hero.subtitle}
+                </p>
+              </div>
+            )}
 
-          <div className="mt-5 flex justify-center">
-            <MusicToggle
-              src={audioSource}
-              label={weddingContent.audioTrack.label}
-              hint={weddingContent.audioTrack.hint}
-              playIconSrc={playIcon}
-              pauseIconSrc={pauseIcon}
-            />
+            <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center sm:bottom-5">
+              <MusicToggle
+                src={audioSource}
+                label={weddingContent.audioTrack.label}
+                hint={weddingContent.audioTrack.hint}
+                playIconSrc={playIcon}
+                pauseIconSrc={pauseIcon}
+              />
+            </div>
           </div>
         </div>
 

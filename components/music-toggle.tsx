@@ -59,7 +59,7 @@ export function MusicToggle({
   }
 
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="flex flex-col items-center gap-2">
       <button
         type="button"
         onClick={handleToggle}
@@ -85,13 +85,13 @@ export function MusicToggle({
       </button>
 
       {feedback ? (
-        <p className="max-w-[12rem] text-right text-xs leading-5 text-taupe">
+        <p className="max-w-[12rem] text-center text-xs leading-5 text-taupe">
           {feedback}
         </p>
       ) : null}
 
       {!isAvailable && hint ? (
-        <p className="max-w-[12rem] text-right text-xs leading-5 text-taupe">
+        <p className="max-w-[12rem] text-center text-xs leading-5 text-taupe">
           {hint}
         </p>
       ) : null}
