@@ -18,19 +18,18 @@ const config: Config = {
       },
       fontFamily: {
         display: [
-          "Iowan Old Style",
-          "Palatino Linotype",
-          "Book Antiqua",
+          "var(--font-antquabi)",
+          "Times New Roman",
           "Georgia",
           "serif",
         ],
         sans: [
-          "Segoe UI",
-          "Inter",
-          "Arial",
-          "system-ui",
-          "sans-serif",
+          "var(--font-antquabi)",
+          "Times New Roman",
+          "Georgia",
+          "serif",
         ],
+        script: ["var(--font-kz-good-vibes)", "cursive"],
       },
       boxShadow: {
         invitation: "0 24px 60px rgba(61, 47, 26, 0.08)",

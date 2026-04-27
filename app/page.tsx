@@ -38,15 +38,21 @@ export default function HomePage() {
           <div className="section-shell">
             <div className="mx-auto max-w-3xl text-center">
               <div className="space-y-2 text-base leading-8 text-charcoal sm:text-lg sm:leading-9">
-                <p>{weddingContent.invitation.greetingLine}</p>
-                <p>{weddingContent.invitation.familyLine}</p>
-                <p className="font-display text-[2rem] italic leading-tight text-gold sm:text-[2.35rem]">
+                <p className="text-[1.05rem] leading-8 sm:text-[1.14rem] sm:leading-9">
+                  {weddingContent.invitation.greetingLine}
+                </p>
+                <p className="text-[1.08rem] leading-8 sm:text-[1.18rem] sm:leading-9">
+                  {weddingContent.invitation.familyLine}
+                </p>
+                <p className="font-script text-[2rem] leading-tight text-gold sm:text-[2.35rem]">
                   {weddingContent.invitation.coupleLine}
                 </p>
-                <p>{weddingContent.invitation.invitationLine}</p>
+                <p className="text-[1.05rem] leading-8 sm:text-[1.14rem] sm:leading-9">
+                  {weddingContent.invitation.invitationLine}
+                </p>
               </div>
 
-              <p className="mt-7 text-[0.72rem] font-semibold uppercase tracking-[0.32em] text-gold">
+              <p className="mt-7 text-[0.78rem] font-semibold uppercase tracking-[0.32em] text-gold sm:text-[0.82rem]">
                 {weddingContent.invitation.hostsLabel}
               </p>
               <p className="mt-3 font-display text-[2rem] text-charcoal sm:text-[2.35rem]">
