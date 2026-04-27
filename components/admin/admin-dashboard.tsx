@@ -142,6 +142,11 @@ export function AdminDashboard() {
                       <div className="font-medium text-charcoal">
                         {entry.full_name}
                       </div>
+                      {entry.second_guest_name ? (
+                        <div className="mt-1 text-sm text-taupe">
+                          2-қонақ: {entry.second_guest_name}
+                        </div>
+                      ) : null}
                     </td>
                     <td className="px-5 py-5 align-top">
                       <span

@@ -51,21 +51,25 @@ export const weddingContent = {
   hero: {
     names: "Бексұлтан & Бұлбұл",
     subtitle: "Үйлену тойы",
-    dateLabel: "23 тамыз 2026",
-    invitationLine: "Сіздерді қуанышымызға ортақ болуға шақырамыз.",
+    dateLabel: "23.08.2026",
+    invitationLine: "",
     detailCtaLabel: "Мәліметтер",
     rsvpCtaLabel: "Жауап қалдыру",
   },
   invitation: {
-    message:
-      "Құрметті ағайын-туыс, құда-жекжат, нағашы-жиен, дос-жаран! Сіздерді ұлымыз Бексұлтан мен аяулы келініміз Бұлбұлдың үйлену тойына арналған салтанатты кешіміздің қадірлі қонағы болуға шын жүректен шақырамыз.",
+    greetingLine:
+      "Құрметті ағайын-туыс, бауырлар, құда-жекжат, нағашы-жиен, бөлелер, құрбы-құрдас, дос-жарандар, ұжымдастар, көршілер!",
+    familyLine: "сіздерді балаларымыз",
+    coupleLine: "Бексұлтан мен Бұлбұлдың",
+    invitationLine:
+      "үйлену тойына арналған салтанатты ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!",
+    hostsLabel: "Той иелері",
     hosts: "Әліби мен Салтанат",
-    note: "Ақ тілектеріңіз бен жылы көңілдеріңіз біз үшін ең қымбат сый.",
   },
   event: {
     isoDate: "2026-08-23T18:00:00+05:00",
-    dateLabel: "Жексенбі, 23 тамыз 2026",
-    timeLabel: "18:00",
+    dateLabel: "Жексенбі, 23.08.2026",
+    timeLabel: "18.00",
     venue: "«Khama Park» салтанат сарайы",
     address: "Жоғарғы Қаскелең тас жолы 25, Алматы",
     mapUrl: "https://go.2gis.com/sRyu2",
@@ -75,7 +79,7 @@ export const weddingContent = {
     addToCalendarLabel: "Күнтізбеге қосу",
   },
   calendar: {
-    caption: "23 тамыз 2026",
+    caption: "23.08.2026",
   },
   countdown: {
     note: "Тойға дейін",
@@ -109,17 +113,22 @@ export const weddingContent = {
     },
   ],
   rsvp: {
-    intro: "Қатыса алсаңыз, қысқа жауап қалдырыңыз.",
+    intro: "Қатысатыныңызды белгілеңіз",
     formDuration: "1 минуттан аз",
     fullNameLabel: "Толық аты-жөні",
     fullNamePlaceholder: "Атыңызды жазыңыз",
     attendanceLegend: "Қатысу жауабы",
-    attendingLabel: "Иә / Да",
-    attendingTitle: "Келемін",
-    attendingDescription: "Қуаныштарыңызға бірге ортақ боламын.",
-    notAttendingLabel: "Жоқ / Нет",
-    notAttendingTitle: "Келе алмаймын",
+    attendingLabel: "Қатысамын",
+    attendingTitle: "Қатысамын",
+    attendingDescription: "Қуанышты күніңізде бірге боламын.",
+    notAttendingLabel: "Қатыса алмаймын",
+    notAttendingTitle: "Қатыса алмаймын",
     notAttendingDescription: "Ізгі тілегімді жолдаймын.",
+    guestCountLabel: "Қонақ саны",
+    guestCountSingle: "1 адам",
+    guestCountDouble: "2 адам",
+    secondGuestLabel: "Екінші қонақтың аты-жөні",
+    secondGuestPlaceholder: "Екінші қонақтың толық аты-жөнін жазыңыз",
     plusOneLabel: "Жұбайыңыздың немесе серігіңіздің аты",
     plusOnePlaceholder: "Жұбайыңызбен келсеңіз, есімін жазыңыз",
     commentLabel: "Тілек немесе ескерту",
@@ -128,7 +137,9 @@ export const weddingContent = {
       "Жауап бірден сақталады. Қажет болса, жаңартылған нұсқаны қайта жібере аласыз.",
     submitLabel: "Жауап жіберу",
     pendingLabel: "Жіберілуде...",
-    success: "Рақмет. Жауабыңыз қабылданды, қуанышта жүздескенше.",
+    success: "Рақмет! Жауабыңыз қабылданды.",
+    successAttendingDetail: "Қуанышымызға ортақ болатыныңызға ризамыз.",
+    successNotAttendingDetail: "Ізгі тілегіңіз үшін рақмет.",
     failure:
       "Жауап жіберілмеді. Байланыс немесе Supabase баптауларын тексеріп, қайта көріңіз.",
   },
@@ -138,7 +149,8 @@ export const weddingContent = {
     whatsappUrl:
       "https://wa.me/77075214911?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7!%20%D0%A2%D0%BE%D0%B9%20%D1%88%D0%B0%D2%9B%D1%8B%D1%80%D1%83%D1%8B%20%D0%B1%D0%BE%D0%B9%D1%8B%D0%BD%D1%88%D0%B0%20%D1%81%D2%B1%D1%80%D0%B0%D2%93%D1%8B%D0%BC%20%D0%B1%D0%B0%D1%80.",
     whatsappLabel: "WhatsApp",
-    thanks: "Ізгі көңілмен келіп, қуанышымызды бірге бөлісетіндеріңіз үшін алғыс айтамыз.",
+    thanks:
+      "Ізгі көңілмен келіп, қуанышымызды бірге бөлісетіндеріңіз үшін алғыс айтамыз.",
     mapLabel: "2GIS",
   },
   media: {

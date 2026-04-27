@@ -6,13 +6,18 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { AttendanceStatus } from "@/lib/supabase/types";
 import { weddingContent } from "@/lib/wedding-content";
 
+type ResultState = {
+  tone: "success" | "error";
+  title: string;
+  detail?: string;
+};
+
 export function RsvpForm() {
   const [attendance, setAttendance] = useState<AttendanceStatus>("attending");
+  const [guestCount, setGuestCount] = useState<"1" | "2">("1");
+  const [secondGuestName, setSecondGuestName] = useState("");
   const [pending, setPending] = useState(false);
-  const [result, setResult] = useState<{
-    tone: "success" | "error";
-    message: string;
-  } | null>(null);
+  const [result, setResult] = useState<ResultState | null>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -21,24 +26,30 @@ export function RsvpForm() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-
+    const isAttending = attendance === "attending";
     const fullName = String(formData.get("fullName") ?? "").trim();
-    const plusOne = String(formData.get("plusOne") ?? "").trim();
+    const nextSecondGuestName = String(formData.get("secondGuestName") ?? "").trim();
     const comment = String(formData.get("comment") ?? "").trim();
+    const payload: {
+      full_name: string;
+      attendance_status: AttendanceStatus;
+      guest_count: number | null;
+      note: string | null;
+      second_guest_name?: string;
+    } = {
+      full_name: fullName,
+      attendance_status: attendance,
+      guest_count: isAttending ? Number(guestCount) : null,
+      note: comment || null,
+    };
 
-    const noteParts = [
-      plusOne ? `Жұбайы / spouse: ${plusOne}` : null,
-      comment ? `Пікір / comment: ${comment}` : null,
-    ].filter(Boolean);
+    if (isAttending && guestCount === "2") {
+      payload.second_guest_name = nextSecondGuestName;
+    }
 
     try {
       const supabase = getSupabaseBrowserClient();
-      const { error } = await supabase.from("rsvps").insert({
-        full_name: fullName,
-        attendance_status: attendance,
-        guest_count: attendance === "attending" ? (plusOne ? 2 : 1) : null,
-        note: noteParts.length > 0 ? noteParts.join("\n") : null,
-      });
+      const { error } = await supabase.from("rsvps").insert(payload);
 
       if (error) {
         throw error;
@@ -46,14 +57,19 @@ export function RsvpForm() {
 
       form.reset();
       setAttendance("attending");
+      setGuestCount("1");
+      setSecondGuestName("");
       setResult({
         tone: "success",
-        message: weddingContent.rsvp.success,
+        title: weddingContent.rsvp.success,
+        detail: isAttending
+          ? weddingContent.rsvp.successAttendingDetail
+          : weddingContent.rsvp.successNotAttendingDetail,
       });
     } catch {
       setResult({
         tone: "error",
-        message: weddingContent.rsvp.failure,
+        title: weddingContent.rsvp.failure,
       });
     } finally {
       setPending(false);
@@ -63,51 +79,51 @@ export function RsvpForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="rounded-[2.2rem] border border-white/65 bg-white/56 px-5 py-6 shadow-[0_24px_60px_rgba(61,47,26,0.06)] backdrop-blur sm:px-7 sm:py-8"
+      className="rounded-[2rem] border border-white/70 bg-white/60 px-5 py-6 shadow-[0_22px_56px_rgba(61,47,26,0.06)] backdrop-blur sm:px-7 sm:py-8"
     >
-      <div className="grid gap-6">
-        <div className="flex justify-end">
-          <div className="rounded-full border border-gold/12 bg-white/72 px-4 py-2 text-sm text-taupe">
-            {weddingContent.rsvp.formDuration}
-          </div>
-        </div>
-
+      <div className="grid gap-5">
         {result ? (
           <div
-            className={`rounded-[1.35rem] border px-4 py-3 text-sm leading-7 ${
+            className={`rounded-[1.7rem] border px-5 py-6 text-center ${
               result.tone === "success"
-                ? "border-gold/25 bg-gold/10 text-charcoal"
-                : "border-red-200 bg-red-50 text-red-700"
+                ? "border-gold/22 bg-[linear-gradient(180deg,rgba(184,154,94,0.12),rgba(255,255,255,0.82))]"
+                : "border-red-200 bg-red-50/90"
             }`}
             aria-live="polite"
           >
-            {result.message}
+            <div
+              className={`mx-auto flex h-11 w-11 items-center justify-center rounded-full border ${
+                result.tone === "success"
+                  ? "border-gold/24 bg-white/80 text-gold"
+                  : "border-red-200 bg-white/85 text-red-500"
+              }`}
+            >
+              <span className="font-display text-xl">
+                {result.tone === "success" ? "OK" : "!"}
+              </span>
+            </div>
+            <p className="mt-4 font-display text-[1.55rem] leading-tight text-charcoal sm:text-[1.8rem]">
+              {result.title}
+            </p>
+            {result.detail ? (
+              <p className="mt-2 text-sm leading-7 text-taupe sm:text-base">
+                {result.detail}
+              </p>
+            ) : null}
           </div>
         ) : null}
 
-        <label className="grid gap-2 text-sm font-medium text-charcoal">
-          {weddingContent.rsvp.fullNameLabel}
-          <input
-            name="fullName"
-            required
-            minLength={2}
-            maxLength={120}
-            placeholder={weddingContent.rsvp.fullNamePlaceholder}
-            className="min-h-14 rounded-[1.3rem] border border-gold/15 bg-white/80 px-4 text-base outline-none transition focus:border-gold/40 focus:ring-2 focus:ring-gold/18"
-          />
-        </label>
-
         <fieldset className="grid gap-3">
-          <legend className="text-sm font-medium text-charcoal">
+          <legend className="sr-only">
             {weddingContent.rsvp.attendanceLegend}
           </legend>
 
           <div className="grid gap-3 sm:grid-cols-2">
             <label
-              className={`cursor-pointer rounded-[1.45rem] border p-4 transition hover:border-gold/35 ${
+              className={`cursor-pointer rounded-[1.5rem] border px-4 py-4 text-center transition ${
                 attendance === "attending"
-                  ? "border-gold/40 bg-[linear-gradient(180deg,rgba(184,154,94,0.12),rgba(255,255,255,0.7))]"
-                  : "border-gold/15 bg-white/68"
+                  ? "border-gold/35 bg-[linear-gradient(180deg,rgba(184,154,94,0.16),rgba(255,255,255,0.84))] shadow-[0_14px_30px_rgba(61,47,26,0.05)]"
+                  : "border-gold/15 bg-white/72 hover:border-gold/30"
               }`}
             >
               <input
@@ -118,10 +134,7 @@ export function RsvpForm() {
                 onChange={() => setAttendance("attending")}
                 className="sr-only"
               />
-              <span className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold">
-                {weddingContent.rsvp.attendingLabel}
-              </span>
-              <span className="mt-3 block font-display text-[1.9rem] text-charcoal">
+              <span className="block font-display text-[1.7rem] leading-tight text-charcoal">
                 {weddingContent.rsvp.attendingTitle}
               </span>
               <span className="mt-2 block text-sm leading-7 text-taupe">
@@ -130,10 +143,10 @@ export function RsvpForm() {
             </label>
 
             <label
-              className={`cursor-pointer rounded-[1.45rem] border p-4 transition hover:border-gold/35 ${
+              className={`cursor-pointer rounded-[1.5rem] border px-4 py-4 text-center transition ${
                 attendance === "not_attending"
-                  ? "border-gold/40 bg-[linear-gradient(180deg,rgba(184,154,94,0.12),rgba(255,255,255,0.7))]"
-                  : "border-gold/15 bg-white/68"
+                  ? "border-gold/35 bg-[linear-gradient(180deg,rgba(184,154,94,0.16),rgba(255,255,255,0.84))] shadow-[0_14px_30px_rgba(61,47,26,0.05)]"
+                  : "border-gold/15 bg-white/72 hover:border-gold/30"
               }`}
             >
               <input
@@ -141,13 +154,14 @@ export function RsvpForm() {
                 name="attendance"
                 value="not_attending"
                 checked={attendance === "not_attending"}
-                onChange={() => setAttendance("not_attending")}
+                onChange={() => {
+                  setAttendance("not_attending");
+                  setGuestCount("1");
+                  setSecondGuestName("");
+                }}
                 className="sr-only"
               />
-              <span className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold">
-                {weddingContent.rsvp.notAttendingLabel}
-              </span>
-              <span className="mt-3 block font-display text-[1.9rem] text-charcoal">
+              <span className="block font-display text-[1.7rem] leading-tight text-charcoal">
                 {weddingContent.rsvp.notAttendingTitle}
               </span>
               <span className="mt-2 block text-sm leading-7 text-taupe">
@@ -157,44 +171,76 @@ export function RsvpForm() {
           </div>
         </fieldset>
 
-        <div className="grid gap-4">
+        <label className="grid gap-2 text-sm font-medium text-charcoal">
+          {weddingContent.rsvp.fullNameLabel}
+          <input
+            name="fullName"
+            required
+            minLength={2}
+            maxLength={120}
+            placeholder={weddingContent.rsvp.fullNamePlaceholder}
+            className="min-h-14 rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
+          />
+        </label>
+
+        {attendance === "attending" ? (
           <label className="grid gap-2 text-sm font-medium text-charcoal">
-            {weddingContent.rsvp.plusOneLabel}
+            {weddingContent.rsvp.guestCountLabel}
+            <select
+              name="guestCount"
+              value={guestCount}
+              onChange={(event) => {
+                const nextGuestCount = event.target.value as "1" | "2";
+                setGuestCount(nextGuestCount);
+
+                if (nextGuestCount === "1") {
+                  setSecondGuestName("");
+                }
+              }}
+              className="min-h-14 rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
+            >
+              <option value="1">{weddingContent.rsvp.guestCountSingle}</option>
+              <option value="2">{weddingContent.rsvp.guestCountDouble}</option>
+            </select>
+          </label>
+        ) : null}
+
+        {attendance === "attending" && guestCount === "2" ? (
+          <label className="grid gap-2 text-sm font-medium text-charcoal">
+            {weddingContent.rsvp.secondGuestLabel}
             <input
-              name="plusOne"
+              name="secondGuestName"
+              value={secondGuestName}
+              onChange={(event) => setSecondGuestName(event.target.value)}
+              required
+              minLength={2}
               maxLength={120}
-              placeholder={weddingContent.rsvp.plusOnePlaceholder}
-              className="min-h-14 rounded-[1.3rem] border border-gold/15 bg-white/80 px-4 text-base outline-none transition focus:border-gold/40 focus:ring-2 focus:ring-gold/18"
+              placeholder={weddingContent.rsvp.secondGuestPlaceholder}
+              className="min-h-14 rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
             />
           </label>
+        ) : null}
 
-          <label className="grid gap-2 text-sm font-medium text-charcoal">
-            {weddingContent.rsvp.commentLabel}
-            <textarea
-              name="comment"
-              rows={4}
-              maxLength={600}
-              placeholder={weddingContent.rsvp.commentPlaceholder}
-              className="min-h-[8.5rem] rounded-[1.3rem] border border-gold/15 bg-white/80 px-4 py-4 text-base outline-none transition focus:border-gold/40 focus:ring-2 focus:ring-gold/18"
-            />
-          </label>
-        </div>
+        <label className="grid gap-2 text-sm font-medium text-charcoal">
+          {weddingContent.rsvp.commentLabel}
+          <textarea
+            name="comment"
+            rows={4}
+            maxLength={600}
+            placeholder={weddingContent.rsvp.commentPlaceholder}
+            className="min-h-[7.5rem] rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 py-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
+          />
+        </label>
 
-        <div className="flex flex-col gap-4 border-t border-gold/10 pt-5 sm:flex-row sm:items-end sm:justify-between">
-          <p className="max-w-xl text-sm leading-7 text-taupe">
-            {weddingContent.rsvp.privacyNote}
-          </p>
-
-          <button
-            type="submit"
-            disabled={pending}
-            className="primary-button min-w-[13rem]"
-          >
-            {pending
-              ? weddingContent.rsvp.pendingLabel
-              : weddingContent.rsvp.submitLabel}
-          </button>
-        </div>
+        <button
+          type="submit"
+          disabled={pending}
+          className="primary-button min-h-[3.35rem] w-full"
+        >
+          {pending
+            ? weddingContent.rsvp.pendingLabel
+            : weddingContent.rsvp.submitLabel}
+        </button>
       </div>
     </form>
   );

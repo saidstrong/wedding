@@ -9,6 +9,7 @@ export type Database = {
           full_name: string;
           attendance_status: AttendanceStatus;
           guest_count: number | null;
+          second_guest_name: string | null;
           note: string | null;
           created_at: string;
         };
@@ -17,6 +18,7 @@ export type Database = {
           full_name: string;
           attendance_status: AttendanceStatus;
           guest_count?: number | null;
+          second_guest_name?: string | null;
           note?: string | null;
           created_at?: string;
         };
@@ -24,6 +26,7 @@ export type Database = {
           full_name?: string;
           attendance_status?: AttendanceStatus;
           guest_count?: number | null;
+          second_guest_name?: string | null;
           note?: string | null;
           created_at?: string;
         };

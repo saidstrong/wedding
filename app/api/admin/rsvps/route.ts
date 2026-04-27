@@ -17,17 +17,34 @@ export async function GET() {
     const supabase = createServiceRoleClient();
     const { data, error } = await supabase
       .from("rsvps")
-      .select("id, full_name, attendance_status, guest_count, note, created_at")
+      .select(
+        "id, full_name, attendance_status, guest_count, second_guest_name, note, created_at",
+      )
       .order("created_at", { ascending: false });
 
+    let submissions: RsvpRow[] = [];
+
     if (error) {
-      return NextResponse.json(
-        { error: "Failed to load RSVP submissions." },
-        { status: 500 },
-      );
+      const fallback = await supabase
+        .from("rsvps")
+        .select("id, full_name, attendance_status, guest_count, note, created_at")
+        .order("created_at", { ascending: false });
+
+      if (fallback.error) {
+        return NextResponse.json(
+          { error: "Failed to load RSVP submissions." },
+          { status: 500 },
+        );
+      }
+
+      submissions = (fallback.data ?? []).map((entry) => ({
+        ...entry,
+        second_guest_name: null,
+      }));
+    } else {
+      submissions = data ?? [];
     }
 
-    const submissions: RsvpRow[] = data ?? [];
     const attending = submissions.filter(
       (entry) => entry.attendance_status === "attending",
     ).length;

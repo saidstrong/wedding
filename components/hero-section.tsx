@@ -44,24 +44,6 @@ export function HeroSection() {
             </div>
           </div>
         </div>
-
-        <div className="mx-auto mt-7 max-w-2xl text-center">
-          <p className="text-sm uppercase tracking-[0.34em] text-gold sm:text-[0.92rem]">
-            {weddingContent.hero.dateLabel}
-          </p>
-          <p className="mt-4 text-sm leading-7 text-taupe sm:text-base sm:leading-8">
-            {weddingContent.hero.invitationLine}
-          </p>
-
-          <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <a href="#details" className="primary-button">
-              {weddingContent.hero.detailCtaLabel}
-            </a>
-            <a href="#rsvp" className="ghost-button">
-              {weddingContent.hero.rsvpCtaLabel}
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );

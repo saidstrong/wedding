@@ -73,21 +73,21 @@ export function Countdown({
   ];
 
   return (
-    <div>
-      <p className="text-center text-sm uppercase tracking-[0.28em] text-gold">
+    <div className="rounded-[2rem] border border-white/65 bg-white/44 px-4 py-4 shadow-[0_18px_44px_rgba(61,47,26,0.06)] backdrop-blur sm:px-5 sm:py-5">
+      <p className="text-center text-[0.68rem] uppercase tracking-[0.28em] text-gold sm:text-[0.72rem]">
         {countdown.complete ? completeLabel : note}
       </p>
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-4">
+      <div className="mt-3 grid grid-cols-4 gap-2 sm:gap-3">
         {items.map((item) => (
           <div
             key={item.label}
-            className="rounded-[1.7rem] border border-white/65 bg-white/48 px-4 py-5 text-center shadow-[0_14px_30px_rgba(61,47,26,0.05)] backdrop-blur"
+            className="rounded-[1.2rem] border border-white/70 bg-white/70 px-2 py-3 text-center shadow-[0_10px_22px_rgba(61,47,26,0.04)]"
           >
-            <div className="font-display text-5xl leading-none text-charcoal sm:text-[3.4rem]">
+            <div className="font-display text-[1.55rem] leading-none tracking-tight text-charcoal sm:text-[2rem]">
               {item.value}
             </div>
-            <div className="mt-3 text-[0.72rem] uppercase tracking-[0.3em] text-taupe">
+            <div className="mt-1.5 text-[0.58rem] uppercase tracking-[0.2em] text-taupe sm:text-[0.62rem]">
               {item.label}
             </div>
           </div>
