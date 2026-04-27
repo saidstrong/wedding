@@ -5,6 +5,14 @@ alter table public.rsvps
 drop constraint if exists rsvps_second_guest_name_check;
 
 alter table public.rsvps
+drop constraint if exists rsvps_second_guest_name_length_check;
+
+update public.rsvps
+set second_guest_name = null
+where second_guest_name is not null
+  and btrim(second_guest_name) = '';
+
+alter table public.rsvps
 add constraint rsvps_second_guest_name_check check (
   (
     attendance_status = 'attending'
@@ -20,4 +28,4 @@ add constraint rsvps_second_guest_name_check check (
     or attendance_status = 'not_attending'
   )
   and second_guest_name is null
-);
+) not valid;

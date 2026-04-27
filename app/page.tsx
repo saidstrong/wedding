@@ -124,12 +124,6 @@ export default function HomePage() {
 
               <div className="mt-6 flex flex-wrap justify-center gap-3">
                 <a
-                  href={`tel:${weddingContent.footer.contactPhone.replace(/\s+/g, "")}`}
-                  className="ghost-button"
-                >
-                  {weddingContent.footer.contactPhone}
-                </a>
-                <a
                   href={weddingContent.footer.whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
