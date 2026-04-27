@@ -18,6 +18,8 @@ export function RsvpForm() {
   const [secondGuestName, setSecondGuestName] = useState("");
   const [pending, setPending] = useState(false);
   const [result, setResult] = useState<ResultState | null>(null);
+  const attendingSelected = attendance === "attending";
+  const notAttendingSelected = attendance === "not_attending";
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -120,10 +122,10 @@ export function RsvpForm() {
 
           <div className="grid gap-3 sm:grid-cols-2">
             <label
-              className={`cursor-pointer rounded-[1.5rem] border px-4 py-4 text-center transition ${
-                attendance === "attending"
-                  ? "border-gold/35 bg-[linear-gradient(180deg,rgba(184,154,94,0.16),rgba(255,255,255,0.84))] shadow-[0_14px_30px_rgba(61,47,26,0.05)]"
-                  : "border-gold/15 bg-white/72 hover:border-gold/30"
+              className={`relative cursor-pointer rounded-[1.5rem] border px-4 py-4 text-center transition duration-300 ${
+                attendingSelected
+                  ? "border-gold/55 bg-[linear-gradient(180deg,rgba(184,154,94,0.32),rgba(255,248,236,0.96))] shadow-[0_18px_38px_rgba(61,47,26,0.09)] ring-1 ring-gold/18"
+                  : "border-white/80 bg-white/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] hover:border-gold/24 hover:bg-white/82"
               }`}
             >
               <input
@@ -134,19 +136,37 @@ export function RsvpForm() {
                 onChange={() => setAttendance("attending")}
                 className="sr-only"
               />
-              <span className="block font-display text-[1.7rem] leading-tight text-charcoal">
+              <span
+                className={`absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full border text-[0.7rem] font-semibold transition ${
+                  attendingSelected
+                    ? "border-gold/50 bg-gold text-charcoal shadow-[0_6px_14px_rgba(184,154,94,0.32)]"
+                    : "border-gold/18 bg-white/90 text-transparent"
+                }`}
+                aria-hidden="true"
+              >
+                •
+              </span>
+              <span
+                className={`block font-display text-[1.7rem] leading-tight ${
+                  attendingSelected ? "text-charcoal" : "text-charcoal/82"
+                }`}
+              >
                 {weddingContent.rsvp.attendingTitle}
               </span>
-              <span className="mt-2 block text-sm leading-7 text-taupe">
+              <span
+                className={`mt-2 block text-sm leading-7 ${
+                  attendingSelected ? "text-charcoal/78" : "text-taupe"
+                }`}
+              >
                 {weddingContent.rsvp.attendingDescription}
               </span>
             </label>
 
             <label
-              className={`cursor-pointer rounded-[1.5rem] border px-4 py-4 text-center transition ${
-                attendance === "not_attending"
-                  ? "border-gold/35 bg-[linear-gradient(180deg,rgba(184,154,94,0.16),rgba(255,255,255,0.84))] shadow-[0_14px_30px_rgba(61,47,26,0.05)]"
-                  : "border-gold/15 bg-white/72 hover:border-gold/30"
+              className={`relative cursor-pointer rounded-[1.5rem] border px-4 py-4 text-center transition duration-300 ${
+                notAttendingSelected
+                  ? "border-gold/55 bg-[linear-gradient(180deg,rgba(184,154,94,0.32),rgba(255,248,236,0.96))] shadow-[0_18px_38px_rgba(61,47,26,0.09)] ring-1 ring-gold/18"
+                  : "border-white/80 bg-white/72 shadow-[inset_0_1px_0_rgba(255,255,255,0.65)] hover:border-gold/24 hover:bg-white/82"
               }`}
             >
               <input
@@ -161,10 +181,28 @@ export function RsvpForm() {
                 }}
                 className="sr-only"
               />
-              <span className="block font-display text-[1.7rem] leading-tight text-charcoal">
+              <span
+                className={`absolute right-4 top-4 flex h-6 w-6 items-center justify-center rounded-full border text-[0.7rem] font-semibold transition ${
+                  notAttendingSelected
+                    ? "border-gold/50 bg-gold text-charcoal shadow-[0_6px_14px_rgba(184,154,94,0.32)]"
+                    : "border-gold/18 bg-white/90 text-transparent"
+                }`}
+                aria-hidden="true"
+              >
+                •
+              </span>
+              <span
+                className={`block font-display text-[1.7rem] leading-tight ${
+                  notAttendingSelected ? "text-charcoal" : "text-charcoal/82"
+                }`}
+              >
                 {weddingContent.rsvp.notAttendingTitle}
               </span>
-              <span className="mt-2 block text-sm leading-7 text-taupe">
+              <span
+                className={`mt-2 block text-sm leading-7 ${
+                  notAttendingSelected ? "text-charcoal/78" : "text-taupe"
+                }`}
+              >
                 {weddingContent.rsvp.notAttendingDescription}
               </span>
             </label>
