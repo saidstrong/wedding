@@ -132,9 +132,14 @@ export default function HomePage() {
               </p>
 
               <div className="mt-5 flex justify-center">
-                <span className="primary-button cursor-default">
+                <a
+                  href={weddingContent.footer.whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="primary-button"
+                >
                   {weddingContent.footer.whatsappLabel}
-                </span>
+                </a>
               </div>
             </div>
           </div>
