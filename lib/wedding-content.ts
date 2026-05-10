@@ -67,9 +67,9 @@ export const weddingContent = {
     hosts: "Әліби & Салтанат",
   },
   event: {
-    isoDate: "2026-08-23T18:00:00+05:00",
+    isoDate: "2026-08-23T17:00:00+05:00",
     dateLabel: "Жексенбі, 23.08.2026",
-    timeLabel: "18.00",
+    timeLabel: "17:00",
     venue: "«Khama Park» салтанат сарайы",
     address: "Жоғарғы Қаскелең тас жолы 25, Алматы",
     mapUrl: "https://go.2gis.com/sRyu2",
@@ -148,9 +148,9 @@ export const weddingContent = {
     contactPhone: "+7 707 521 49 11",
     whatsappUrl:
       "https://wa.me/77075214911?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7!%20%D0%A2%D0%BE%D0%B9%20%D1%88%D0%B0%D2%9B%D1%8B%D1%80%D1%83%D1%8B%20%D0%B1%D0%BE%D0%B9%D1%8B%D0%BD%D1%88%D0%B0%20%D1%81%D2%B1%D1%80%D0%B0%D2%93%D1%8B%D0%BC%20%D0%B1%D0%B0%D1%80.",
-    whatsappLabel: "WhatsApp",
+    whatsappLabel: "BAS Group командасымен жасалды.",
     thanks:
-      "Ізгі көңілмен келіп, қуанышымызды бірге бөлісетіндеріңіз үшін алғыс айтамыз.",
+      "Қуанышымызға ортақ болуға шақырамыз!",
     mapLabel: "2GIS",
   },
   media: {

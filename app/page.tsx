@@ -107,7 +107,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="rsvp" className="section-transition py-14 sm:py-18">
+        <section
+          id="rsvp"
+          className="section-transition pt-14 pb-10 sm:pt-18 sm:pb-14"
+        >
           <div className="section-shell">
             <div className="mx-auto max-w-3xl">
               <p className="text-center font-display text-[1.75rem] leading-tight text-charcoal sm:text-[2rem]">
@@ -121,30 +124,17 @@ export default function HomePage() {
           </div>
         </section>
 
-        <footer className="pt-6 pb-14 sm:pb-18">
+        <footer className="pt-1 pb-14 sm:pt-2 sm:pb-18">
           <div className="section-shell">
             <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/65 bg-white/48 px-5 py-6 text-center shadow-[0_20px_52px_rgba(61,47,26,0.06)] backdrop-blur sm:px-7 sm:py-7">
-              <p className="text-sm leading-7 text-taupe sm:text-base">
+              <p className="text-[1.05rem] leading-8 text-taupe sm:text-[1.12rem]">
                 {weddingContent.footer.thanks}
               </p>
 
-              <div className="mt-6 flex flex-wrap justify-center gap-3">
-                <a
-                  href={weddingContent.footer.whatsappUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="primary-button"
-                >
+              <div className="mt-5 flex justify-center">
+                <span className="primary-button cursor-default">
                   {weddingContent.footer.whatsappLabel}
-                </a>
-                <a
-                  href={weddingContent.event.mapUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="ghost-button"
-                >
-                  {weddingContent.footer.mapLabel}
-                </a>
+                </span>
               </div>
             </div>
           </div>
