@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import type { EditableMedia } from "@/lib/wedding-content";
+import type { EditableMedia } from "@/lib/invitations/types";
 import { resolveAssetSource } from "@/lib/media";
 
 type BackgroundStageProps = {

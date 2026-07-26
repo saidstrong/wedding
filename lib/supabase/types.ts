@@ -11,6 +11,7 @@ export type Database = {
           guest_count: number | null;
           second_guest_name: string | null;
           note: string | null;
+          invitation_slug: string;
           created_at: string;
         };
         Insert: {
@@ -20,6 +21,7 @@ export type Database = {
           guest_count?: number | null;
           second_guest_name?: string | null;
           note?: string | null;
+          invitation_slug?: string;
           created_at?: string;
         };
         Update: {
@@ -28,6 +30,7 @@ export type Database = {
           guest_count?: number | null;
           second_guest_name?: string | null;
           note?: string | null;
+          invitation_slug?: string;
           created_at?: string;
         };
         Relationships: [];

@@ -1,0 +1,179 @@
+import { BackgroundStage } from "@/components/background-stage";
+import { CalendarFrame } from "@/components/calendar-frame";
+import { Countdown } from "@/components/countdown";
+import { DetailsActions } from "@/components/details-actions";
+import { HeroSection } from "@/components/hero-section";
+import { RsvpForm } from "@/components/rsvp-form";
+import type { InvitationConfig } from "@/lib/invitations/types";
+
+type WeddingInvitationPageProps = {
+  content: InvitationConfig;
+};
+
+export function WeddingInvitationPage({
+  content,
+}: WeddingInvitationPageProps) {
+  const detailItems = content.event
+    ? [
+        {
+          label: "Күні",
+          value: content.event.dateLabel,
+        },
+        {
+          label: "Уақыты",
+          value: content.event.timeLabel,
+        },
+        {
+          label: "Өтетін орны",
+          value: content.event.venue,
+        },
+        {
+          label: "Мекенжайы",
+          value: content.event.address,
+        },
+      ]
+    : [];
+
+  return (
+    <BackgroundStage
+      media={content.background.backgroundImage}
+      overlayOpacity={content.background.backgroundOverlayOpacity}
+    >
+      <main className="relative pb-10">
+        <HeroSection
+          hero={content.hero}
+          audioTrack={content.audioTrack}
+          heroArtwork={content.media.heroArtwork}
+        />
+
+        {content.invitation ? (
+          <section id="invitation" className="section-transition py-10 sm:py-14">
+            <div className="section-shell">
+              <div className="mx-auto max-w-3xl text-center">
+                <div className="space-y-2 text-base leading-8 text-charcoal sm:text-lg sm:leading-9">
+                  <p className="text-[1.05rem] leading-8 sm:text-[1.14rem] sm:leading-9">
+                    {content.invitation.greetingLine}
+                  </p>
+                  <p className="text-[1.08rem] leading-8 sm:text-[1.18rem] sm:leading-9">
+                    {content.invitation.familyLine}
+                  </p>
+                  <p className="font-script text-[2rem] leading-tight text-gold sm:text-[2.35rem]">
+                    {content.invitation.coupleLine}
+                  </p>
+                  <p className="text-[1.05rem] leading-8 sm:text-[1.14rem] sm:leading-9">
+                    {content.invitation.invitationLine}
+                  </p>
+                </div>
+
+                {content.invitation.hosts &&
+                content.invitation.hostsLabel ? (
+                  <>
+                    <p className="mt-7 text-[0.78rem] font-semibold uppercase tracking-[0.32em] text-gold sm:text-[0.82rem]">
+                      {content.invitation.hostsLabel}
+                    </p>
+                    <p className="mt-3 font-display text-[2rem] text-charcoal sm:text-[2.35rem]">
+                      {content.invitation.hosts}
+                    </p>
+                  </>
+                ) : null}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {content.event ? (
+          <section id="details" className="section-transition py-14 sm:py-18">
+            <div className="section-shell">
+              <div className="mx-auto max-w-5xl space-y-4 sm:space-y-5">
+                <div className="grid gap-6 lg:grid-cols-[1fr_17rem] lg:items-center">
+                  <div className="rounded-[2.2rem] border border-white/65 bg-white/52 px-5 py-6 shadow-[0_24px_60px_rgba(61,47,26,0.06)] backdrop-blur sm:px-7 sm:py-7">
+                    <dl className="space-y-4">
+                      {detailItems.map((item) => (
+                        <div
+                          key={item.label}
+                          className="grid gap-2 rounded-[1.45rem] bg-white/52 px-4 py-4 sm:grid-cols-[8.5rem_1fr] sm:items-center"
+                        >
+                          <dt className="text-[0.72rem] uppercase tracking-[0.3em] text-gold">
+                            {item.label}
+                          </dt>
+                          <dd className="font-display text-[1.7rem] leading-tight text-charcoal sm:text-[2rem]">
+                            {item.value}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+
+                    <div className="mt-6">
+                      <DetailsActions
+                        address={content.event.address}
+                        mapUrl={content.event.mapUrl}
+                        mapLabel={content.event.mapLabel}
+                        mapIconSrc={content.event.mapIconSrc}
+                      />
+                    </div>
+                  </div>
+
+                  <CalendarFrame targetDate={content.event.isoDate} />
+                </div>
+
+                {content.countdown ? (
+                  <Countdown
+                    targetDate={content.event.isoDate}
+                    note={content.countdown.note}
+                    completeLabel={content.countdown.completeLabel}
+                  />
+                ) : null}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {content.rsvp?.enabled ? (
+          <section
+            id="rsvp"
+            className="section-transition pt-14 pb-10 sm:pt-18 sm:pb-14"
+          >
+            <div className="section-shell">
+              <div className="mx-auto max-w-3xl">
+                <p className="text-center font-display text-[1.75rem] leading-tight text-charcoal sm:text-[2rem]">
+                  {content.rsvp.intro}
+                </p>
+
+                <div className="mt-5">
+                  <RsvpForm
+                    invitationSlug={content.slug}
+                    content={content.rsvp}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        <footer className="pt-1 pb-14 sm:pt-2 sm:pb-18">
+          <div className="section-shell">
+            <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/65 bg-white/48 px-5 py-6 text-center shadow-[0_20px_52px_rgba(61,47,26,0.06)] backdrop-blur sm:px-7 sm:py-7">
+              <p className="text-[1.05rem] leading-8 text-taupe sm:text-[1.12rem]">
+                {content.footer.thanks}
+              </p>
+
+              {content.footer.whatsappUrl &&
+              content.footer.whatsappLabel ? (
+                <div className="mt-5 flex justify-center">
+                  <a
+                    href={content.footer.whatsappUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="primary-button"
+                  >
+                    {content.footer.whatsappLabel}
+                  </a>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </footer>
+      </main>
+    </BackgroundStage>
+  );
+}

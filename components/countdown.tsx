@@ -16,6 +16,14 @@ type CountdownState = {
   complete: boolean;
 };
 
+const initialCountdownState: CountdownState = {
+  days: "00",
+  hours: "00",
+  minutes: "00",
+  seconds: "00",
+  complete: false,
+};
+
 function toDisplay(value: number) {
   return String(value).padStart(2, "0");
 }
@@ -55,9 +63,11 @@ export function Countdown({
   note,
   completeLabel,
 }: CountdownProps) {
-  const [countdown, setCountdown] = useState(() => getCountdownState(targetDate));
+  const [countdown, setCountdown] = useState(initialCountdownState);
 
   useEffect(() => {
+    setCountdown(getCountdownState(targetDate));
+
     const intervalId = window.setInterval(() => {
       setCountdown(getCountdownState(targetDate));
     }, 1000);

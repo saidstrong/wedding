@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import { weddingContent } from "@/lib/wedding-content";
+import { beksultanBulbulInvitation } from "@/lib/invitations/beksultan-bulbul";
 
 import "./globals.css";
 
@@ -19,8 +19,8 @@ const kzGoodVibes = localFont({
 });
 
 export const metadata: Metadata = {
-  title: weddingContent.metadata.title,
-  description: weddingContent.metadata.description,
+  title: beksultanBulbulInvitation.metadata.title,
+  description: beksultanBulbulInvitation.metadata.description,
 };
 
 export default function RootLayout({

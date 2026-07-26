@@ -3,8 +3,8 @@
 import { FormEvent, useState } from "react";
 
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import type { RsvpContent } from "@/lib/invitations/types";
 import type { AttendanceStatus } from "@/lib/supabase/types";
-import { weddingContent } from "@/lib/wedding-content";
 
 type ResultState = {
   tone: "success" | "error";
@@ -12,7 +12,12 @@ type ResultState = {
   detail?: string;
 };
 
-export function RsvpForm() {
+type RsvpFormProps = {
+  invitationSlug: string;
+  content: RsvpContent;
+};
+
+export function RsvpForm({ invitationSlug, content }: RsvpFormProps) {
   const [attendance, setAttendance] = useState<AttendanceStatus>("attending");
   const [guestCount, setGuestCount] = useState<"1" | "2">("1");
   const [secondGuestName, setSecondGuestName] = useState("");
@@ -38,11 +43,13 @@ export function RsvpForm() {
       guest_count: number | null;
       note: string | null;
       second_guest_name?: string;
+      invitation_slug: string;
     } = {
       full_name: fullName,
       attendance_status: attendance,
       guest_count: isAttending ? Number(guestCount) : null,
       note: comment || null,
+      invitation_slug: invitationSlug,
     };
 
     if (isAttending && guestCount === "2") {
@@ -63,15 +70,15 @@ export function RsvpForm() {
       setSecondGuestName("");
       setResult({
         tone: "success",
-        title: weddingContent.rsvp.success,
+        title: content.success,
         detail: isAttending
-          ? weddingContent.rsvp.successAttendingDetail
-          : weddingContent.rsvp.successNotAttendingDetail,
+          ? content.successAttendingDetail
+          : content.successNotAttendingDetail,
       });
     } catch {
       setResult({
         tone: "error",
-        title: weddingContent.rsvp.failure,
+        title: content.failure,
       });
     } finally {
       setPending(false);
@@ -117,7 +124,7 @@ export function RsvpForm() {
 
         <fieldset className="grid gap-3">
           <legend className="sr-only">
-            {weddingContent.rsvp.attendanceLegend}
+            {content.attendanceLegend}
           </legend>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -151,14 +158,14 @@ export function RsvpForm() {
                   attendingSelected ? "text-charcoal" : "text-charcoal/82"
                 }`}
               >
-                {weddingContent.rsvp.attendingTitle}
+                {content.attendingTitle}
               </span>
               <span
                 className={`mt-2 block text-sm leading-7 ${
                   attendingSelected ? "text-charcoal/78" : "text-taupe"
                 }`}
               >
-                {weddingContent.rsvp.attendingDescription}
+                {content.attendingDescription}
               </span>
             </label>
 
@@ -196,34 +203,34 @@ export function RsvpForm() {
                   notAttendingSelected ? "text-charcoal" : "text-charcoal/82"
                 }`}
               >
-                {weddingContent.rsvp.notAttendingTitle}
+                {content.notAttendingTitle}
               </span>
               <span
                 className={`mt-2 block text-sm leading-7 ${
                   notAttendingSelected ? "text-charcoal/78" : "text-taupe"
                 }`}
               >
-                {weddingContent.rsvp.notAttendingDescription}
+                {content.notAttendingDescription}
               </span>
             </label>
           </div>
         </fieldset>
 
         <label className="grid gap-2 text-sm font-medium text-charcoal">
-          {weddingContent.rsvp.fullNameLabel}
+          {content.fullNameLabel}
           <input
             name="fullName"
             required
             minLength={2}
             maxLength={120}
-            placeholder={weddingContent.rsvp.fullNamePlaceholder}
+            placeholder={content.fullNamePlaceholder}
             className="min-h-14 rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
           />
         </label>
 
         {attendance === "attending" ? (
           <label className="grid gap-2 text-sm font-medium text-charcoal">
-            {weddingContent.rsvp.guestCountLabel}
+            {content.guestCountLabel}
             <select
               name="guestCount"
               value={guestCount}
@@ -237,15 +244,15 @@ export function RsvpForm() {
               }}
               className="min-h-14 rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
             >
-              <option value="1">{weddingContent.rsvp.guestCountSingle}</option>
-              <option value="2">{weddingContent.rsvp.guestCountDouble}</option>
+              <option value="1">{content.guestCountSingle}</option>
+              <option value="2">{content.guestCountDouble}</option>
             </select>
           </label>
         ) : null}
 
         {attendance === "attending" && guestCount === "2" ? (
           <label className="grid gap-2 text-sm font-medium text-charcoal">
-            {weddingContent.rsvp.secondGuestLabel}
+            {content.secondGuestLabel}
             <input
               name="secondGuestName"
               value={secondGuestName}
@@ -253,19 +260,19 @@ export function RsvpForm() {
               required
               minLength={2}
               maxLength={120}
-              placeholder={weddingContent.rsvp.secondGuestPlaceholder}
+              placeholder={content.secondGuestPlaceholder}
               className="min-h-14 rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
             />
           </label>
         ) : null}
 
         <label className="grid gap-2 text-sm font-medium text-charcoal">
-          {weddingContent.rsvp.commentLabel}
+          {content.commentLabel}
           <textarea
             name="comment"
             rows={4}
             maxLength={600}
-            placeholder={weddingContent.rsvp.commentPlaceholder}
+            placeholder={content.commentPlaceholder}
             className="min-h-[7.5rem] rounded-[1.25rem] border border-gold/14 bg-white/82 px-4 py-4 text-base outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
           />
         </label>
@@ -276,8 +283,8 @@ export function RsvpForm() {
           className="primary-button min-h-[3.35rem] w-full"
         >
           {pending
-            ? weddingContent.rsvp.pendingLabel
-            : weddingContent.rsvp.submitLabel}
+            ? content.pendingLabel
+            : content.submitLabel}
         </button>
       </div>
     </form>

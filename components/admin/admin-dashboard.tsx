@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import type { RsvpRow } from "@/lib/supabase/types";
@@ -10,9 +10,26 @@ type AdminResponse = {
     totalSubmissions: number;
     attending: number;
     notAttending: number;
+    byInvitation: Record<
+      string,
+      {
+        totalSubmissions: number;
+        attending: number;
+        notAttending: number;
+      }
+    >;
   };
   submissions: RsvpRow[];
 };
+
+const invitationLabels: Record<string, string> = {
+  "beksultan-bulbul": "Бексұлтан & Бұлбұл",
+  "shyngys-nazerke": "Шыңғыс & Назерке",
+};
+
+function formatInvitationLabel(slug: string) {
+  return invitationLabels[slug] ?? slug;
+}
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("kk-KZ", {
@@ -26,6 +43,36 @@ export function AdminDashboard() {
   const [data, setData] = useState<AdminResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [invitationFilter, setInvitationFilter] = useState("all");
+
+  const invitationSlugs = useMemo(
+    () =>
+      Array.from(
+        new Set(data?.submissions.map((entry) => entry.invitation_slug) ?? []),
+      ).sort(),
+    [data],
+  );
+  const visibleSubmissions = useMemo(
+    () =>
+      data?.submissions.filter(
+        (entry) =>
+          invitationFilter === "all" ||
+          entry.invitation_slug === invitationFilter,
+      ) ?? [],
+    [data, invitationFilter],
+  );
+  const visibleSummary = useMemo(
+    () => ({
+      totalSubmissions: visibleSubmissions.length,
+      attending: visibleSubmissions.filter(
+        (entry) => entry.attendance_status === "attending",
+      ).length,
+      notAttending: visibleSubmissions.filter(
+        (entry) => entry.attendance_status === "not_attending",
+      ).length,
+    }),
+    [visibleSubmissions],
+  );
 
   async function loadData() {
     setLoading(true);
@@ -89,23 +136,41 @@ export function AdminDashboard() {
         </div>
       </div>
 
+      <div className="mt-8 flex justify-end">
+        <label className="grid gap-2 text-sm font-medium text-charcoal">
+          Шақыру бойынша сүзу
+          <select
+            value={invitationFilter}
+            onChange={(event) => setInvitationFilter(event.target.value)}
+            className="min-h-12 rounded-[1.1rem] border border-gold/14 bg-white/82 px-4 text-sm outline-none transition focus:border-gold/36 focus:ring-2 focus:ring-gold/16"
+          >
+            <option value="all">Барлық шақырулар</option>
+            {invitationSlugs.map((slug) => (
+              <option key={slug} value={slug}>
+                {formatInvitationLabel(slug)}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <div className="panel-frame p-6">
           <p className="text-sm text-taupe">Барлық жауап</p>
           <p className="mt-3 font-display text-5xl text-charcoal">
-            {loading ? "..." : data?.summary.totalSubmissions ?? 0}
+            {loading ? "..." : visibleSummary.totalSubmissions}
           </p>
         </div>
         <div className="panel-frame p-6">
           <p className="text-sm text-taupe">Келетіндер</p>
           <p className="mt-3 font-display text-5xl text-charcoal">
-            {loading ? "..." : data?.summary.attending ?? 0}
+            {loading ? "..." : visibleSummary.attending}
           </p>
         </div>
         <div className="panel-frame p-6">
           <p className="text-sm text-taupe">Келе алмайтындар</p>
           <p className="mt-3 font-display text-5xl text-charcoal">
-            {loading ? "..." : data?.summary.notAttending ?? 0}
+            {loading ? "..." : visibleSummary.notAttending}
           </p>
         </div>
       </div>
@@ -115,6 +180,7 @@ export function AdminDashboard() {
           <table className="min-w-full border-separate border-spacing-0 text-left">
             <thead className="bg-white/70 text-xs uppercase tracking-[0.24em] text-taupe">
               <tr>
+                <th className="px-5 py-4 font-medium">Шақыру</th>
                 <th className="px-5 py-4 font-medium">Қонақ</th>
                 <th className="px-5 py-4 font-medium">Мәртебе</th>
                 <th className="px-5 py-4 font-medium">Саны</th>
@@ -125,19 +191,24 @@ export function AdminDashboard() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td className="px-5 py-6 text-sm text-taupe" colSpan={5}>
+                  <td className="px-5 py-6 text-sm text-taupe" colSpan={6}>
                     Деректер жүктелуде...
                   </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td className="px-5 py-6 text-sm text-red-600" colSpan={5}>
+                  <td className="px-5 py-6 text-sm text-red-600" colSpan={6}>
                     {error}
                   </td>
                 </tr>
-              ) : data && data.submissions.length > 0 ? (
-                data.submissions.map((entry: RsvpRow) => (
+              ) : visibleSubmissions.length > 0 ? (
+                visibleSubmissions.map((entry: RsvpRow) => (
                   <tr key={entry.id} className="border-t border-gold/10">
+                    <td className="px-5 py-5 align-top">
+                      <span className="inline-flex rounded-full bg-gold/10 px-3 py-1 text-xs font-semibold text-charcoal">
+                        {formatInvitationLabel(entry.invitation_slug)}
+                      </span>
+                    </td>
                     <td className="px-5 py-5 align-top">
                       <div className="font-medium text-charcoal">
                         {entry.full_name}
@@ -174,8 +245,10 @@ export function AdminDashboard() {
                 ))
               ) : (
                 <tr>
-                  <td className="px-5 py-6 text-sm text-taupe" colSpan={5}>
-                    Әзірге бірде-бір RSVP жоқ.
+                  <td className="px-5 py-6 text-sm text-taupe" colSpan={6}>
+                    {invitationFilter === "all"
+                      ? "Әзірге бірде-бір RSVP жоқ."
+                      : "Бұл шақыру бойынша RSVP жоқ."}
                   </td>
                 </tr>
               )}
