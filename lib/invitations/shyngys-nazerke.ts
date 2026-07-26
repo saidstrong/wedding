@@ -41,20 +41,20 @@ export const shyngysNazerkeInvitation = {
   },
   invitation: {
     greetingLine:
-      "Құрметті ағайын-туыс, бауырлар, құда-жекжат, нағашы-жиен, бөлелер, құрбы-құрдас, дос-жарандар, ұжымдастар, көршілер!",
-    familyLine: "сіздерді балаларымыз",
-    coupleLine: "Шыңғыс & Назеркенің",
+      "Ағайын-туыс, бауырлар, құда-жекжат, нағашы-жиен, құрбы-құрдас, дос-жарандар, әріптестер, көршілер!",
+    familyLine: "сіз(дер)ді балаларымыз",
+    coupleLine: "Шыңғыс пен Назеркенің",
     invitationLine:
       "үйлену тойына арналған салтанатты ақ дастарханымыздың қадірлі қонағы болуға шақырамыз!",
     hostsLabel: "Той иелері",
-    hosts: "Әліби & Салтанат",
+    hosts: "Самат & Салтанат",
   },
   event: {
-    isoDate: "2026-08-23T17:00:00+05:00",
-    dateLabel: "Жексенбі, 23.08.2026",
+    isoDate: "2026-09-19T17:00:00+05:00",
+    dateLabel: "Сенбі, 19.09.2026",
     timeLabel: "17:00",
-    venue: "«Khama Park» салтанат сарайы",
-    address: "Жоғарғы Қаскелең тас жолы 25, Алматы",
+    venue: "«Сұлтан сарайы» салтанат сарайы",
+    address: "Алматы қ. Сеитова көшесі 12, Қалқаман-2 ықшам ауданы",
     mapUrl: "https://go.2gis.com/sRyu2",
     mapLabel: "2GIS",
     mapIconSrc: "/assets/2gis.png",
@@ -62,7 +62,7 @@ export const shyngysNazerkeInvitation = {
     addToCalendarLabel: "Күнтізбеге қосу",
   },
   calendar: {
-    caption: "23.08.2026",
+    caption: "19.09.2026",
   },
   countdown: {
     note: "Тойға дейін",
