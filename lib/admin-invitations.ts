@@ -26,3 +26,17 @@ export function isAdminDestination(
 ): value is AdminDestination {
   return value === "/admin" || value === "/shyngys-nazerke/admin";
 }
+
+export function getAdminInvitationByDestination(
+  value: string | null | undefined,
+) {
+  if (value === "/admin") {
+    return adminInvitations["beksultan-bulbul"];
+  }
+
+  if (value === "/shyngys-nazerke/admin") {
+    return adminInvitations["shyngys-nazerke"];
+  }
+
+  return null;
+}

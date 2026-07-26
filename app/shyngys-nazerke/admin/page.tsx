@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { AdminDashboard } from "@/components/admin/admin-dashboard";
 import { AdminGate } from "@/components/admin/admin-gate";
 import { adminInvitations } from "@/lib/admin-invitations";
-import { isAdminAuthorized } from "@/lib/admin-session";
+import { isAdminAuthorizedFor } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ShyngysNazerkeAdminPage() {
-  const authorized = await isAdminAuthorized();
   const config = adminInvitations["shyngys-nazerke"];
+  const authorized = await isAdminAuthorizedFor(config.invitationSlug);
 
   if (!authorized) {
     return (

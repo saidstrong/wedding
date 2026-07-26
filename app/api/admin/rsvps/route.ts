@@ -1,16 +1,16 @@
 import { NextResponse } from "next/server";
 
 import { isKnownInvitationSlug } from "@/lib/admin-invitations";
-import { isAdminAuthorized } from "@/lib/admin-session";
+import { getAdminSession } from "@/lib/admin-session";
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import type { RsvpRow } from "@/lib/supabase/types";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const authorized = await isAdminAuthorized();
+  const session = await getAdminSession();
 
-  if (!authorized) {
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
@@ -22,6 +22,13 @@ export async function GET(request: Request) {
     return NextResponse.json(
       { error: "Missing or unsupported invitation slug." },
       { status: 400 },
+    );
+  }
+
+  if (session.invitationSlug !== invitationSlug) {
+    return NextResponse.json(
+      { error: "Forbidden for this invitation." },
+      { status: 403 },
     );
   }
 

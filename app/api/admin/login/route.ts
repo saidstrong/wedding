@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 
 import {
+  ADMIN_SESSION_MAX_AGE_SECONDS,
   ADMIN_SESSION_COOKIE,
-  getAdminSessionValue,
+  createAdminSessionValue,
   validateAdminPasscode,
 } from "@/lib/admin-session";
-import { isAdminDestination } from "@/lib/admin-invitations";
+import { getAdminInvitationByDestination } from "@/lib/admin-invitations";
 
 export const dynamic = "force-dynamic";
 
@@ -24,29 +25,54 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  if (!isAdminDestination(destination)) {
+  const adminInvitation = getAdminInvitationByDestination(destination);
+
+  if (!adminInvitation) {
     return NextResponse.json(
       { error: "Invalid admin destination." },
       { status: 400 },
     );
   }
 
-  if (!validateAdminPasscode(passcode)) {
+  let sessionValue = "";
+
+  try {
+    if (
+      !validateAdminPasscode(adminInvitation.invitationSlug, passcode)
+    ) {
+      return NextResponse.json(
+        { error: "Invalid passcode." },
+        { status: 401 },
+      );
+    }
+
+    sessionValue = createAdminSessionValue(
+      adminInvitation.invitationSlug,
+    );
+  } catch (error) {
     return NextResponse.json(
-      { error: "Invalid passcode." },
-      { status: 401 },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Admin passcode configuration is invalid.",
+      },
+      { status: 500 },
     );
   }
 
-  const response = NextResponse.json({ ok: true, destination });
+  const response = NextResponse.json({
+    ok: true,
+    destination: adminInvitation.destination,
+  });
 
   response.cookies.set({
     name: ADMIN_SESSION_COOKIE,
-    value: getAdminSessionValue(),
+    value: sessionValue,
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 12,
+    maxAge: ADMIN_SESSION_MAX_AGE_SECONDS,
     path: "/",
   });
 
