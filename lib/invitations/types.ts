@@ -59,6 +59,7 @@ export type RsvpContent = {
 
 export type InvitationConfig = {
   slug: string;
+  route: string;
   couple: {
     firstName: string;
     secondName: string;

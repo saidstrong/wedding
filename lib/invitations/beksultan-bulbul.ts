@@ -2,6 +2,7 @@ import type { InvitationConfig } from "@/lib/invitations/types";
 
 export const beksultanBulbulInvitation = {
   slug: "beksultan-bulbul",
+  route: "/",
   couple: {
     firstName: "Beksultan",
     secondName: "Bulbul",

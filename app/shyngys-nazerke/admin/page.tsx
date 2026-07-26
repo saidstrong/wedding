@@ -7,12 +7,12 @@ import { isAdminAuthorized } from "@/lib/admin-session";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: adminInvitations["beksultan-bulbul"].title,
+  title: adminInvitations["shyngys-nazerke"].title,
 };
 
-export default async function AdminPage() {
+export default async function ShyngysNazerkeAdminPage() {
   const authorized = await isAdminAuthorized();
-  const config = adminInvitations["beksultan-bulbul"];
+  const config = adminInvitations["shyngys-nazerke"];
 
   if (!authorized) {
     return (

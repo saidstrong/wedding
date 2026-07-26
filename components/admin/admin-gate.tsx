@@ -3,7 +3,17 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function AdminGate() {
+import {
+  isAdminDestination,
+  type AdminDestination,
+} from "@/lib/admin-invitations";
+
+type AdminGateProps = {
+  title: string;
+  destination: AdminDestination;
+};
+
+export function AdminGate({ title, destination }: AdminGateProps) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +32,7 @@ export function AdminGate() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ passcode }),
+        body: JSON.stringify({ passcode, destination }),
       });
 
       if (!response.ok) {
@@ -31,6 +41,15 @@ export function AdminGate() {
         return;
       }
 
+      const payload = (await response.json()) as { destination?: string };
+
+      if (!isAdminDestination(payload.destination)) {
+        setError("Кіру бағытын тексеру мүмкін болмады.");
+        setPending(false);
+        return;
+      }
+
+      router.replace(payload.destination);
       router.refresh();
     } catch {
       setError("Кіру кезінде қате пайда болды.");
@@ -43,7 +62,7 @@ export function AdminGate() {
       <div className="panel-frame w-full max-w-md p-8">
         <p className="section-kicker">Admin</p>
         <h1 className="font-display text-4xl text-charcoal">
-          RSVP бақылау панелі
+          {title}
         </h1>
         <p className="mt-4 text-sm leading-7 text-taupe">
           Қарапайым passcode енгізіңіз. Бұл бет қонақ жауаптарын қарауға
